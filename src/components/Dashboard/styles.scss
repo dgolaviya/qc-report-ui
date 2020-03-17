@@ -25,6 +25,7 @@
   }
   .content-section {
     height: 100%;
+    position: relative;
     // overflow: hidden;
     .top-header {
       padding-top: 5px;
@@ -48,6 +49,34 @@
       }
       .report-card {
         min-width: 300px;
+      }
+      .edit-regent-report {
+        .title {
+          font-weight: 500;
+          font-size: 1.5rem;
+        }
+        position: absolute;
+        right: 0;
+        top: 0;
+        z-index: 1;
+        background: white;
+        width: 350px;
+        border: 1px solid lightgray;
+        padding: 15px;
+        animation: moveInRight 1s ease-out;
+      }
+      @keyframes moveInRight {
+        0% {
+          opacity: 0;
+          transform: translateX(10rem);
+        }
+        80% {
+          transform: translateX(-1rem);
+        }
+        100% {
+          opacity: 1;
+          transform: translate(0);
+        }
       }
     }
   }

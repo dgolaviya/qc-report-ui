@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { Switch, Route } from 'react-router-dom';
+import { Switch } from 'react-router-dom';
 import PrivateRoute from "../PrivateRoute";
 import { logoutUser } from "../../actions/actions";
 import NavMenu from "../NavMenu";
@@ -22,6 +22,8 @@ class Dashboard extends Component {
   onClickItem = (title) => () => {
     if (title === 'Logout') {
       this.props.logoutUser();
+    } else if (title === 'Dashboard') {
+      this.props.history.push("/dashboard");
     }
     this.setState({ selectedMenuItem: title });
   };

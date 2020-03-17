@@ -9,9 +9,9 @@ const ReportDashboard = () => {
       <div className="content flex d-col">
         <div>
           <div className="separator grey-text text-darken-1">January 2020</div>
-          <Card title="QC-summary" />
-          <Card title="QC-detail-1" />
-          <Card title="QC-detail-2" />
+          <Card title="QC-summary" month={1} />
+          <Card title="QC-detail-1" month={1} />
+          <Card title="QC-detail-2" month={1} />
         </div>
         <div>
           <div className="separator grey-text text-darken-1">February 2020</div>
