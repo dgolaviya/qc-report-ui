@@ -1,4 +1,54 @@
 @import "../../scss/globals";
 .dashboard {
- 
+  height: 100%;
+  .left-menu {
+    padding: 0;
+    height: 100%;
+    border-right: 1px solid #4b5f83;
+    .menu-image {
+      background: #4b5f83;
+      width: 100%;
+    }
+    .menu-items {
+      border: none;
+      margin: 0;
+      .menu-item {
+        border: none;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        &:hover {
+          background-color: lightblue;
+        }
+      }
+    }
+  }
+  .content-section {
+    height: 100%;
+    // overflow: hidden;
+    .top-header {
+      padding-top: 5px;
+      height: 80px;
+      margin: 0;
+      border-bottom: 1px solid lightgray;
+      .title {
+        font-weight: 500;
+        font-size: 2.5rem;
+      }
+    }
+    .content-header {
+      border-bottom: 1px solid lightgray;
+    }
+    .content {
+      overflow-y: auto;
+      .separator {
+        border: 1px solid lightgray;
+        font-weight: 600;
+        padding: 10px;
+      }
+      .report-card {
+        min-width: 300px;
+      }
+    }
+  }
 }

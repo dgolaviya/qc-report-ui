@@ -12,7 +12,7 @@ import Dashboard from "./components/Dashboard/Dashboard";
 
 import { SET_USER_AUTHORIZED } from './actions/types';
 
-import './App.css';
+import './App.scss';
 
 // Check for token to keep user logged in
 if (localStorage.jwtToken) {
@@ -43,7 +43,7 @@ function App() {
           <Route exact path="/register" component={Register} />
           <Route exact path="/login" component={Login} />
           <Switch>
-            <PrivateRoute exact path="/dashboard" component={Dashboard} />
+            <PrivateRoute path="/dashboard" component={Dashboard} />
           </Switch>
         </div>
       </BrowserRouter>

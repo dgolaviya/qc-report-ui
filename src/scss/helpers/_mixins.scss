@@ -1,3 +1,6 @@
+$maxPadding: 20;
+$paddingUnit: "px";
+
 @mixin left($prefix, $property, $val) {
   @if $val>0 {
     .#{$prefix}l-#{$val} {

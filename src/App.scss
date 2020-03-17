@@ -1,0 +1,156 @@
+@import "./scss/globals";
+.App {
+  height: 100vh;
+  overflow: hidden;
+  .w-100 {
+    width: 100%;
+  }
+  .flex {
+    display: flex;
+  }
+  .f-wrap {
+    flex-wrap: wrap;
+  }
+  .d-row {
+    flex-direction: row;
+  }
+  .d-col {
+    flex-direction: column;
+  }
+  .j-c-start {
+    justify-content: start;
+  }
+  .j-c-between {
+    justify-content: space-between;
+  }
+  .j-c-center {
+    justify-content: center;
+  }
+  .j-c-end {
+    justify-content: end;
+    justify-content: flex-end;
+  }
+  .j-s-start {
+    justify-self: start;
+  }
+  .j-s-center {
+    justify-self: center;
+  }
+  .j-s-end {
+    justify-self: end;
+  }
+  .j-i-start {
+    justify-items: start;
+  }
+  .j-i-end {
+    justify-items: end;
+  }
+  .j-i-center {
+    justify-items: center;
+  }
+  .j-i-stretch {
+    justify-items: stretch;
+  }
+  .a-i-start {
+    align-items: flex-start;
+  }
+  .a-i-center {
+    align-items: center;
+  }
+  .a-i-end {
+    align-items: flex-end;
+  }
+  .a-i-stretch {
+    align-items: stretch;
+  }
+  .a-s-start {
+    align-self: flex-start;
+  }
+  .a-s-end {
+    align-self: flex-end;
+  }
+  .a-s-start {
+    align-self: center;
+  }
+  .a-s-stretch {
+    align-self: stretch;
+  }
+  .a-c-start {
+    align-content: flex-start;
+  }
+  .a-c-between {
+    align-content: space-between;
+  }
+  .a-c-center {
+    align-content: center;
+  }
+  .a-c-end {
+    align-content: flex-end;
+  }
+  .a-c-stretch {
+    align-content: stretch;
+  }
+  .fs-10 {
+    font-size: font-size-converter(10);
+  }
+  .fs-11 {
+    font-size: font-size-converter(11);
+  }
+  .fs-12 {
+    font-size: font-size-converter(12);
+  }
+  .fs-13 {
+    font-size: font-size-converter(13);
+  }
+  .fs-14 {
+    font-size: font-size-converter(14);
+  }
+  .fs-15 {
+    font-size: font-size-converter(15);
+  }
+  .fs-16 {
+    font-size: font-size-converter(16);
+  }
+  .fs-17 {
+    font-size: font-size-converter(17);
+  }
+  .fs-18 {
+    font-size: font-size-converter(18);
+  }
+  .fs-19 {
+    font-size: font-size-converter(19);
+  }
+  .fs-20 {
+    font-size: font-size-converter(20);
+  }
+  .fs-21 {
+    font-size: font-size-converter(21);
+  }
+  .fs-22 {
+    font-size: font-size-converter(22);
+  }
+  .fs-23 {
+    font-size: font-size-converter(23);
+  }
+  .fs-24 {
+    font-size: font-size-converter(24);
+  }
+  .fs-25 {
+    font-size: font-size-converter(25);
+  }
+  .fs-26 {
+    font-size: font-size-converter(26);
+  }
+  .fs-27 {
+    font-size: font-size-converter(27);
+  }
+  .fs-28 {
+    font-size: font-size-converter(28);
+  }
+  .fs-29 {
+    font-size: font-size-converter(29);
+  }
+  .fs-30 {
+    font-size: font-size-converter(30);
+  }
+}
