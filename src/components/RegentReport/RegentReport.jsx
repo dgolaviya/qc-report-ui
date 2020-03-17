@@ -59,8 +59,10 @@ class RegentReport extends Component {
     ]
   }
   showEditDialogue = () => {
-    console.log('button clicked')
     this.setState({ showEditDialogue: true });
+  };
+  hideEditDialogue = () => {
+    this.setState({ showEditDialogue: false });
   };
   render() {
     return (
@@ -144,7 +146,7 @@ class RegentReport extends Component {
               ))}
             </tbody>
           </Table>
-          {this.state.showEditDialogue && <EditRegentReport />}
+          {this.state.showEditDialogue && <EditRegentReport hideEditDialogue={this.hideEditDialogue} />}
         </div>
       </>
     )

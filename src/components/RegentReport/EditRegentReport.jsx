@@ -2,10 +2,16 @@ import React, { Component } from 'react';
 import { Range, Icon, Checkbox, RadioGroup, Button } from 'react-materialize';
 
 export class EditRegentReport extends Component {
+  state = {
+    showSuccess: false
+  }
+  showSuccessMessage = () => {
+    this.setState({ showSuccess: true });
+  }
   render() {
     return (
       <div className="flex d-col edit-regent-report">
-        <div className="flex d-row w-100 j-c-end">
+        <div onClick={this.props.hideEditDialogue} className="flex d-row w-100 j-c-end">
           <Icon>close</Icon>
         </div>
         <div className="title">Edit Regent Report</div>
@@ -69,8 +75,7 @@ export class EditRegentReport extends Component {
         <div className="center">
           <Button
             className="blue"
-            // icon={<Icon>save</Icon>}
-            // label="Save"
+            onClick={this.showSuccessMessage}
             node="button"
             waves="light"
           >Save</Button>
