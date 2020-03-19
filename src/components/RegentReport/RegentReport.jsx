@@ -7,6 +7,7 @@ import { getRegantChartDetails } from "../../actions/actions";
 class RegentReport extends Component {
   state = {
     showEditDialogue: false,
+    isContentEditable: false,
     name: "Reg3",
     month: "March",
     year: 2020
@@ -19,6 +20,9 @@ class RegentReport extends Component {
     }
     this.props.getRegantChartDetails(regantChart);
   }
+  toggleIsContentEditable = () => {
+    this.setState(prevState => ({ isContentEditable: !prevState.isContentEditable }));
+  }
   showEditDialogue = () => {
     this.setState({ showEditDialogue: true });
   };
@@ -28,13 +32,15 @@ class RegentReport extends Component {
   render() {
     const dcKeys = Object.keys(this.props.dataCollection) || [];
     const { dataCollection } = this.props;
+    const isHeaderFormEditable = !this.state.isContentEditable;
     return (
       <>
         <div className="content-header flex d-row f-wrap">
-          <TextInput label="S/N" value="2007730" placeholder="Enter SN" />
-          <TextInput label="Mediserve" value="11448" placeholder="Enter Mediserve" />
-          <TextInput label="Acceptable Limits" disabled value="2&#8451;-8&#8451;" />
+          <TextInput disabled={isHeaderFormEditable} label="S/N" defaultValue="2007730" placeholder="Enter SN" />
+          <TextInput disabled={isHeaderFormEditable} label="Mediserve" defaultValue="11448" placeholder="Enter Mediserve" />
+          <TextInput disabled={isHeaderFormEditable} label="Acceptable Limits" value="2&#8451;-8&#8451;" />
           <Select
+            disabled={isHeaderFormEditable}
             label="Report Month"
             onChange={function noRefCheck() { }}
             value={this.state.month}
@@ -46,8 +52,9 @@ class RegentReport extends Component {
             <option value="May">May</option>
           </Select>
           <Select
+            disabled={isHeaderFormEditable}
             label="Report Year"
-            onChange={function noRefCheck() { console.log("Event called")}}
+            onChange={function noRefCheck() { console.log("Event called") }}
             value={this.state.year}
           >
             <option value="2016">2016</option>
@@ -57,12 +64,20 @@ class RegentReport extends Component {
             <option value="2020">2020</option>
           </Select>
           <div className="ml-20 flex d-row a-i-center">
-            <Button
+            {this.state.isContentEditable ?( <Button
               className="blue"
+              onClick={this.toggleIsContentEditable}
               icon={<Icon>save</Icon>}
               node="button"
               waves="light"
-            />
+            />):
+              <Button
+                onClick={this.toggleIsContentEditable}
+                className="orange"
+                icon={<Icon>edit</Icon>}
+                node="button"
+                waves="light"
+              />}
           </div>
         </div>
         <div className="content flex d-col">
@@ -92,7 +107,7 @@ class RegentReport extends Component {
                   <td>(2&#8451;-8&#8451;)</td>
                   <td><Icon className="green-text">check_circle</Icon></td>
                   <td>{dataCollection[dcKey].au}</td>
-                  <td>{dataCollection[dcKey].tech}</td> 
+                  <td>{dataCollection[dcKey].tech}</td>
                   <td>
                     <div onClick={this.showEditDialogue}>
                       <Button
@@ -103,7 +118,6 @@ class RegentReport extends Component {
                         waves="light"
                       />
                     </div>
-
                   </td>
                 </tr>
               ))}

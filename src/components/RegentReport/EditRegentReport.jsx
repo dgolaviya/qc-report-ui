@@ -18,32 +18,40 @@ export class EditRegentReport extends Component {
         <label>
           <span>Chart</span>
           <Range
-            max="100"
-            min="0"
+            min="2"
+            max="8"
+            step="0.1"
+            defaultValue="5"
             name="points"
           />
         </label>
         <label>
           <span>Upper</span>
           <Range
-            max="100"
-            min="0"
+            min="2"
+            max="8"
+            step="0.1"
+            defaultValue="5"
             name="points"
           />
         </label>
         <label>
           <span>Lower</span>
           <Range
-            max="100"
-            min="0"
+            min="2"
+            max="8"
+            step="0.1"
+            defaultValue="5"
             name="points"
           />
         </label>
         <label>
           <span>Digital</span>
           <Range
-            max="100"
-            min="0"
+            min="2"
+            max="8"
+            step="0.1"
+            defaultValue="5"
             name="points"
           />
         </label>
