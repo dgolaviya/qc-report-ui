@@ -3,7 +3,8 @@ import setAuthToken from "../utils/setAuthToken";
 import {
   LOGIN_USER,
   SET_USER_AUTHORIZED,
-  REGISTER_USER
+  REGISTER_USER,
+  GET_REGENT_CHARTS
 } from "./types";
 
 // Register User
@@ -36,4 +37,15 @@ export const logoutUser = () => {
   setAuthToken(false);
   // Set current user to empty object {} which will set isAuthenticated to false
   return { type: SET_USER_AUTHORIZED, payload: { isAuthenticated: false } }
+};
+
+export const getRegantChartDetails = (regantChart) => {
+  const url = '/getRegantChartDetails';
+  const payload = {
+    action: GET_REGENT_CHARTS,
+    method: 'POST',
+    url,
+    data: regantChart
+  };
+  return { type: "API_INVOCATION", payload };
 };

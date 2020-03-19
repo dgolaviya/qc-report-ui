@@ -1,62 +1,23 @@
 import React, { Component } from 'react';
 import { Select, TextInput, Icon, Button, Table } from 'react-materialize';
 import EditRegentReport from './EditRegentReport';
+import { connect } from "react-redux";
+import { getRegantChartDetails } from "../../actions/actions";
 
 class RegentReport extends Component {
   state = {
     showEditDialogue: false,
-    tableData: [
-      {
-        day: 1,
-        upper: 6,
-        lower: 4,
-        chart: 4,
-        digital: 5,
-        balChk: true,
-        au: 'A',
-        tech: 'John'
-      },
-      {
-        day: 2,
-        upper: 7,
-        lower: 3,
-        chart: 5,
-        digital: 5,
-        balChk: true,
-        au: 'U',
-        tech: 'James'
-      },
-      {
-        day: 3,
-        upper: 5,
-        lower: 2,
-        chart: 3,
-        digital: 4,
-        balChk: true,
-        au: 'A',
-        tech: 'Jigar'
-      },
-      {
-        day: 4,
-        upper: 6,
-        lower: 4,
-        chart: 5,
-        digital: 2,
-        balChk: true,
-        au: 'U',
-        tech: 'Kashyap'
-      },
-      {
-        day: 5,
-        upper: 8,
-        lower: 4,
-        chart: 4,
-        digital: 6,
-        balChk: true,
-        au: 'A',
-        tech: 'Divyang'
-      }
-    ]
+    name: "Reg3",
+    month: "March",
+    year: 2020
+  }
+  componentDidMount() {
+    const regantChart = {
+      name: this.state.name,
+      month: this.state.month,
+      year: this.state.year
+    }
+    this.props.getRegantChartDetails(regantChart);
   }
   showEditDialogue = () => {
     this.setState({ showEditDialogue: true });
@@ -65,6 +26,8 @@ class RegentReport extends Component {
     this.setState({ showEditDialogue: false });
   };
   render() {
+    const dcKeys = Object.keys(this.props.dataCollection) || [];
+    const { dataCollection } = this.props;
     return (
       <>
         <div className="content-header flex d-row f-wrap">
@@ -74,7 +37,7 @@ class RegentReport extends Component {
           <Select
             label="Report Month"
             onChange={function noRefCheck() { }}
-            value="October"
+            value={this.state.month}
           >
             <option value="January">January</option>
             <option value="February">February</option>
@@ -84,8 +47,8 @@ class RegentReport extends Component {
           </Select>
           <Select
             label="Report Year"
-            onChange={function noRefCheck() { }}
-            value="2020"
+            onChange={function noRefCheck() { console.log("Event called")}}
+            value={this.state.year}
           >
             <option value="2016">2016</option>
             <option value="2017">2017</option>
@@ -119,17 +82,17 @@ class RegentReport extends Component {
               </tr>
             </thead>
             <tbody>
-              {this.state.tableData.map(item => (
-                <tr key={item.day}>
-                  <td>{item.day}</td>
-                  <td>{item.chart}&#8451;</td>
-                  <td>{item.upper}&#8451;</td>
-                  <td>{item.lower}&#8451;</td>
-                  <td>{item.digital}&#8451;</td>
+              {dcKeys.map(dcKey => (
+                <tr key={dcKey}>
+                  <td>{dataCollection[dcKey].day}</td>
+                  <td>{dataCollection[dcKey].chart}&#8451;</td>
+                  <td>{dataCollection[dcKey].upper}&#8451;</td>
+                  <td>{dataCollection[dcKey].lower}&#8451;</td>
+                  <td>{dataCollection[dcKey].digital}&#8451;</td>
                   <td>(2&#8451;-8&#8451;)</td>
                   <td><Icon className="green-text">check_circle</Icon></td>
-                  <td>{item.au}</td>
-                  <td>{item.tech}</td>
+                  <td>{dataCollection[dcKey].au}</td>
+                  <td>{dataCollection[dcKey].tech}</td> 
                   <td>
                     <div onClick={this.showEditDialogue}>
                       <Button
@@ -153,4 +116,16 @@ class RegentReport extends Component {
   }
 };
 
-export default RegentReport;
+const mapStateToProps = state => ({
+  auth: state.auth,
+  errors: state.errors,
+  dataCollection: state.regentChart.dataCollection
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  getRegantChartDetails: (regentChartData) => dispatch(getRegantChartDetails(regentChartData))
+});
+
+
+//export default RegentReport;
+export default connect(mapStateToProps, mapDispatchToProps)(RegentReport);
