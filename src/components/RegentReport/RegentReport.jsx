@@ -4,11 +4,16 @@ import EditRegentReport from './EditRegentReport';
 import { connect } from "react-redux";
 import { getRegantChartDetails } from "../../actions/actions";
 
+
 class RegentReport extends Component {
   state = {
     showEditDialogue: false,
     isContentEditable: false,
     name: "Reg3",
+    serialNo: 's56',
+    range:'2&#8451;-8&#8451;',
+    day:'',
+    chart:'',
     month: "March",
     year: 2020
   }
@@ -23,26 +28,55 @@ class RegentReport extends Component {
   toggleIsContentEditable = () => {
     this.setState(prevState => ({ isContentEditable: !prevState.isContentEditable }));
   }
-  showEditDialogue = () => {
+  showEditDialogue = param => () => {
     this.setState({ showEditDialogue: true });
+    this.setState({ day: param });
   };
   hideEditDialogue = () => {
     this.setState({ showEditDialogue: false });
+  };
+  refereshData = () => {
+    const regantChart = {
+      name: this.state.name,
+      month: this.state.month,
+      year: this.state.year
+    }
+    this.props.getRegantChartDetails(regantChart);
   };
   render() {
     const dcKeys = Object.keys(this.props.dataCollection) || [];
     const { dataCollection } = this.props;
     const isHeaderFormEditable = !this.state.isContentEditable;
+    const handleChangeMonth = event => {
+      console.log("Event called" + event.target.value)
+      this.setState({ month: event.target.value });
+      const regantChart = {
+        name: this.state.name,
+        month: event.target.value,
+        year: this.state.year
+      }
+      this.props.getRegantChartDetails(regantChart);
+    };
+    const handleChangeYear = event => {
+      console.log("Event called" + event.target.value)
+      this.setState({ year: event.target.value });
+      const regantChart = {
+        name: this.state.name,
+        month: this.state.month,
+        year: event.target.value
+      }
+      this.props.getRegantChartDetails(regantChart);
+    };
     return (
       <>
         <div className="content-header flex d-row f-wrap">
-          <TextInput disabled={isHeaderFormEditable} label="S/N" defaultValue="2007730" placeholder="Enter SN" />
+          <TextInput disabled={isHeaderFormEditable} label="S/N" defaultValue={this.state.serialNo} placeholder="Enter SN" />
           <TextInput disabled={isHeaderFormEditable} label="Mediserve" defaultValue="11448" placeholder="Enter Mediserve" />
           <TextInput disabled={isHeaderFormEditable} label="Acceptable Limits" value="2&#8451;-8&#8451;" />
           <Select
             disabled={isHeaderFormEditable}
             label="Report Month"
-            onChange={function noRefCheck() { }}
+            onChange={handleChangeMonth}
             value={this.state.month}
           >
             <option value="January">January</option>
@@ -54,7 +88,7 @@ class RegentReport extends Component {
           <Select
             disabled={isHeaderFormEditable}
             label="Report Year"
-            onChange={function noRefCheck() { console.log("Event called") }}
+            onChange={handleChangeYear}
             value={this.state.year}
           >
             <option value="2016">2016</option>
@@ -64,13 +98,13 @@ class RegentReport extends Component {
             <option value="2020">2020</option>
           </Select>
           <div className="ml-20 flex d-row a-i-center">
-            {this.state.isContentEditable ?( <Button
+            {this.state.isContentEditable ? (<Button
               className="blue"
               onClick={this.toggleIsContentEditable}
               icon={<Icon>save</Icon>}
               node="button"
               waves="light"
-            />):
+            />) :
               <Button
                 onClick={this.toggleIsContentEditable}
                 className="orange"
@@ -109,7 +143,7 @@ class RegentReport extends Component {
                   <td>{dataCollection[dcKey].au}</td>
                   <td>{dataCollection[dcKey].tech}</td>
                   <td>
-                    <div onClick={this.showEditDialogue}>
+                    <div onClick={this.showEditDialogue(dataCollection[dcKey].day)}>
                       <Button
                         floating
                         className="orange"
@@ -123,7 +157,19 @@ class RegentReport extends Component {
               ))}
             </tbody>
           </Table>
-          {this.state.showEditDialogue && <EditRegentReport hideEditDialogue={this.hideEditDialogue} />}
+          {this.state.showEditDialogue && <EditRegentReport name = {this.state.name}
+                                                            month={this.state.month} 
+                                                            year={this.state.year}
+                                                            serialNo={this.state.serialNo}
+                                                            day={this.state.day}  
+                                                            range={this.state.range}
+                                                            chart={dataCollection[this.state.day].chart}
+                                                            upper={dataCollection[this.state.day].upper}
+                                                            lower={dataCollection[this.state.day].lower}
+                                                            digital={dataCollection[this.state.day].digital}
+                                                            batCheck={dataCollection[this.state.day].batCheck}
+                                                            au={dataCollection[this.state.day].au} hideEditDialogue={this.hideEditDialogue}
+                                                            refereshData={this.refereshData} />}
         </div>
       </>
     )
