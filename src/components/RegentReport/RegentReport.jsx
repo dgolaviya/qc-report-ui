@@ -48,7 +48,7 @@ class RegentReport extends Component {
     this.setState({ year: event.target.value });
     const regantChart = {
       name: this.state.name,
-      month: months[event.target.value],
+      month: months[this.state.month],
       year: event.target.value
     }
     this.props.getRegantChartDetails(regantChart);
@@ -155,7 +155,7 @@ class RegentReport extends Component {
                 <th data-field="lower">Lower</th>
                 <th data-field="digital">Digital</th>
                 <th data-field="range">Range</th>
-                <th data-field="bal-chk">Bal Chk</th>
+                <th data-field="bal-chk">Battery Chk</th>
                 <th data-field="au">A/U</th>
                 <th data-field="tech">Tech</th>
                 <th></th>
@@ -165,14 +165,14 @@ class RegentReport extends Component {
               {dcKeys.map(dcKey => (
                 <tr key={dcKey}>
                   <td>{dataCollection[dcKey].day}-{months[this.state.month]}</td>
-                  <td>{dataCollection[dcKey].chart}&#8451;</td>
-                  <td>{dataCollection[dcKey].upper}&#8451;</td>
-                  <td>{dataCollection[dcKey].lower}&#8451;</td>
-                  <td>{dataCollection[dcKey].digital}&#8451;</td>
+                  <td>{dataCollection[dcKey].chart && <span>{dataCollection[dcKey].chart}&#8451;</span>}</td>
+                  <td>{dataCollection[dcKey].upper && <span>{dataCollection[dcKey].upper}&#8451;</span>}</td>
+                  <td>{dataCollection[dcKey].lower && <span>{dataCollection[dcKey].lower}&#8451;</span>}</td>
+                  <td>{dataCollection[dcKey].digital && <span>{dataCollection[dcKey].digital}&#8451;</span>}</td>
                   <td>(2&#8451;-8&#8451;)</td>
                   <td><Icon className="green-text">check_circle</Icon></td>
-                  <td>{dataCollection[dcKey].au}</td>
-                  <td>{dataCollection[dcKey].userId}</td>
+                  <td>{dataCollection[dcKey].au && <span>{dataCollection[dcKey].au}&#8451;</span>}</td>
+                  <td>{dataCollection[dcKey].userId && <span>{dataCollection[dcKey].userId}&#8451;</span>}</td>
                   <td>
                     <div onClick={this.showEditDialogue}>
                       <Button
