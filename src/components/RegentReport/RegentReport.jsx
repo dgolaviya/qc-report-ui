@@ -1,26 +1,27 @@
 import React, { Component } from 'react';
-import { Select, TextInput, Icon, Button, Table } from 'react-materialize';
+import { Select, TextInput, Icon, Button, Table, Preloader } from 'react-materialize';
 import EditRegentReport from './EditRegentReport';
 import { connect } from "react-redux";
 import { getRegantChartDetails } from "../../actions/actions";
 
+const months = ['January', 'February', 'March', 'April', 'May', 'June',
+  'July', 'August', 'September', 'October', 'November', 'December'
+];
+const years = [2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020,
+  2021, 2022, 2023, 2024];
 
 class RegentReport extends Component {
   state = {
-    showEditDialogue: false,
+    isEditDialogueOpen: false,
     isContentEditable: false,
     name: "Reg3",
-    serialNo: 's56',
-    range:'2&#8451;-8&#8451;',
-    day:'',
-    chart:'',
-    month: "March",
-    year: 2020
+    month: new Date().getMonth(),
+    year: new Date().getFullYear()
   }
   componentDidMount() {
     const regantChart = {
       name: this.state.name,
-      month: this.state.month,
+      month: months[this.state.month],
       year: this.state.year
     }
     this.props.getRegantChartDetails(regantChart);
@@ -28,74 +29,69 @@ class RegentReport extends Component {
   toggleIsContentEditable = () => {
     this.setState(prevState => ({ isContentEditable: !prevState.isContentEditable }));
   }
-  showEditDialogue = param => () => {
-    this.setState({ showEditDialogue: true });
-    this.setState({ day: param });
+  showEditDialogue = () => {
+    this.setState({ isEditDialogueOpen: true });
   };
   hideEditDialogue = () => {
-    this.setState({ showEditDialogue: false });
+    this.setState({ isEditDialogueOpen: false });
   };
-  refereshData = () => {
+  handleChangeMonth = event => {
+    this.setState({ month: event.target.value });
     const regantChart = {
       name: this.state.name,
-      month: this.state.month,
+      month: months[event.target.value],
       year: this.state.year
+    }
+    this.props.getRegantChartDetails(regantChart);
+  };
+  handleChangeYear = event => {
+    this.setState({ year: event.target.value });
+    const regantChart = {
+      name: this.state.name,
+      month: months[event.target.value],
+      year: event.target.value
     }
     this.props.getRegantChartDetails(regantChart);
   };
   render() {
     const dcKeys = Object.keys(this.props.dataCollection) || [];
-    const { dataCollection } = this.props;
+    const { dataCollection, error, loading } = this.props;
     const isHeaderFormEditable = !this.state.isContentEditable;
-    const handleChangeMonth = event => {
-      console.log("Event called" + event.target.value)
-      this.setState({ month: event.target.value });
-      const regantChart = {
-        name: this.state.name,
-        month: event.target.value,
-        year: this.state.year
-      }
-      this.props.getRegantChartDetails(regantChart);
-    };
-    const handleChangeYear = event => {
-      console.log("Event called" + event.target.value)
-      this.setState({ year: event.target.value });
-      const regantChart = {
-        name: this.state.name,
-        month: this.state.month,
-        year: event.target.value
-      }
-      this.props.getRegantChartDetails(regantChart);
-    };
     return (
       <>
         <div className="content-header flex d-row f-wrap">
-          <TextInput disabled={isHeaderFormEditable} label="S/N" defaultValue={this.state.serialNo} placeholder="Enter SN" />
-          <TextInput disabled={isHeaderFormEditable} label="Mediserve" defaultValue="11448" placeholder="Enter Mediserve" />
-          <TextInput disabled={isHeaderFormEditable} label="Acceptable Limits" value="2&#8451;-8&#8451;" />
+          <TextInput
+            disabled={isHeaderFormEditable}
+            label="S/N"
+            defaultValue='s56'
+            placeholder="Enter SN"
+          />
+          <TextInput
+            disabled={isHeaderFormEditable}
+            label="Mediserve"
+            defaultValue="11448"
+            placeholder="Enter Mediserve"
+          />
+          <TextInput
+            disabled
+            label="Acceptable Limits"
+            value="2&#8451;-8&#8451;"
+          />
           <Select
             disabled={isHeaderFormEditable}
             label="Report Month"
-            onChange={handleChangeMonth}
+            onChange={this.handleChangeMonth}
             value={this.state.month}
           >
-            <option value="January">January</option>
-            <option value="February">February</option>
-            <option value="March">March</option>
-            <option value="April">April</option>
-            <option value="May">May</option>
+            {months.map((month, index) => <option key={month} value={index}>{month}</option>)}
           </Select>
           <Select
             disabled={isHeaderFormEditable}
             label="Report Year"
-            onChange={handleChangeYear}
+            onChange={this.handleChangeYear}
             value={this.state.year}
           >
-            <option value="2016">2016</option>
-            <option value="2017">2017</option>
-            <option value="2018">2018</option>
-            <option value="2019">2019</option>
-            <option value="2020">2020</option>
+            {years.map(year => <option key={year} value={year}>{year}</option>)}
           </Select>
           <div className="ml-20 flex d-row a-i-center">
             {this.state.isContentEditable ? (<Button
@@ -115,7 +111,18 @@ class RegentReport extends Component {
           </div>
         </div>
         <div className="content flex d-col">
-          <Table className="centered highlight responsive-table">
+          {error && <div className="flex d-row j-c-center">{error}</div>}
+          {loading && (
+            <div className="flex d-row j-c-center a-i-center preloader">
+              <Preloader
+                active
+                color="blue"
+                flashing={false}
+                size="big"
+              />
+            </div>
+          )}
+          {(!error && !loading) && <Table className="centered highlight responsive-table">
             <thead>
               <tr>
                 <th data-field="day">Day</th>
@@ -133,7 +140,7 @@ class RegentReport extends Component {
             <tbody>
               {dcKeys.map(dcKey => (
                 <tr key={dcKey}>
-                  <td>{dataCollection[dcKey].day}</td>
+                  <td>{dataCollection[dcKey].day}-{months[this.state.month]}</td>
                   <td>{dataCollection[dcKey].chart}&#8451;</td>
                   <td>{dataCollection[dcKey].upper}&#8451;</td>
                   <td>{dataCollection[dcKey].lower}&#8451;</td>
@@ -141,9 +148,9 @@ class RegentReport extends Component {
                   <td>(2&#8451;-8&#8451;)</td>
                   <td><Icon className="green-text">check_circle</Icon></td>
                   <td>{dataCollection[dcKey].au}</td>
-                  <td>{dataCollection[dcKey].tech}</td>
+                  <td>{dataCollection[dcKey].userId}</td>
                   <td>
-                    <div onClick={this.showEditDialogue(dataCollection[dcKey].day)}>
+                    <div onClick={this.showEditDialogue}>
                       <Button
                         floating
                         className="orange"
@@ -156,20 +163,20 @@ class RegentReport extends Component {
                 </tr>
               ))}
             </tbody>
-          </Table>
-          {this.state.showEditDialogue && <EditRegentReport name = {this.state.name}
-                                                            month={this.state.month} 
-                                                            year={this.state.year}
-                                                            serialNo={this.state.serialNo}
-                                                            day={this.state.day}  
-                                                            range={this.state.range}
-                                                            chart={dataCollection[this.state.day].chart}
-                                                            upper={dataCollection[this.state.day].upper}
-                                                            lower={dataCollection[this.state.day].lower}
-                                                            digital={dataCollection[this.state.day].digital}
-                                                            batCheck={dataCollection[this.state.day].batCheck}
-                                                            au={dataCollection[this.state.day].au} hideEditDialogue={this.hideEditDialogue}
-                                                            refereshData={this.refereshData} />}
+          </Table>}
+          {this.state.isEditDialogueOpen && <EditRegentReport
+            // name={this.state.name}
+            // month={this.state.month}
+            // year={this.state.year}
+            // day={this.state.day}
+            // chart={dataCollection[this.state.day].chart}
+            // upper={dataCollection[this.state.day].upper}
+            // lower={dataCollection[this.state.day].lower}
+            // digital={dataCollection[this.state.day].digital}
+            // batCheck={dataCollection[this.state.day].batCheck}
+            // au={dataCollection[this.state.day].au}
+            hideEditDialogue={this.hideEditDialogue}
+          />}
         </div>
       </>
     )
@@ -178,8 +185,9 @@ class RegentReport extends Component {
 
 const mapStateToProps = state => ({
   auth: state.auth,
-  errors: state.errors,
-  dataCollection: state.regentChart.dataCollection
+  error: state.regentChart.error,
+  dataCollection: state.regentChart.dataCollection,
+  loading: state.regentChart.loading
 });
 
 const mapDispatchToProps = (dispatch) => ({
