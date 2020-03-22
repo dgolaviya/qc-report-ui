@@ -16,7 +16,8 @@ class RegentReport extends Component {
     isContentEditable: false,
     name: "Reg3",
     month: new Date().getMonth(),
-    year: new Date().getFullYear()
+    year: new Date().getFullYear(),
+    selectedDc: []
   }
   componentDidMount() {
     const regantChart = {
@@ -29,8 +30,8 @@ class RegentReport extends Component {
   toggleIsContentEditable = () => {
     this.setState(prevState => ({ isContentEditable: !prevState.isContentEditable }));
   }
-  showEditDialogue = () => {
-    this.setState({ isEditDialogueOpen: true });
+  showEditDialogue = (dataCollection) => () => {
+    this.setState({ isEditDialogueOpen: true, selectedDc: dataCollection });
   };
   hideEditDialogue = () => {
     this.setState({ isEditDialogueOpen: false });
@@ -59,7 +60,7 @@ class RegentReport extends Component {
       name: this.state.name,
       month: months[this.state.month],
       year: this.state.year,
-      serialNo: 'S0002',
+      serialNo: this.props.serialNo,
       range: '2C-8C'
     }
     this.props.createRegentChart(regantChart);
@@ -67,7 +68,7 @@ class RegentReport extends Component {
 
   render() {
     const dcKeys = Object.keys(this.props.dataCollection) || [];
-    const { dataCollection, error, loading } = this.props;
+    const { dataCollection, error, loading, serialNo } = this.props;
     const isHeaderFormEditable = !this.state.isContentEditable;
     return (
       <>
@@ -75,7 +76,7 @@ class RegentReport extends Component {
           <TextInput
             disabled={isHeaderFormEditable}
             label="S/N"
-            defaultValue='s56'
+            value={serialNo}
             placeholder="Enter SN"
           />
           <TextInput
@@ -171,10 +172,10 @@ class RegentReport extends Component {
                   <td>{dataCollection[dcKey].digital && <span>{dataCollection[dcKey].digital}&#8451;</span>}</td>
                   <td>(2&#8451;-8&#8451;)</td>
                   <td><Icon className="green-text">check_circle</Icon></td>
-                  <td>{dataCollection[dcKey].au && <span>{dataCollection[dcKey].au}&#8451;</span>}</td>
-                  <td>{dataCollection[dcKey].userId && <span>{dataCollection[dcKey].userId}&#8451;</span>}</td>
+                  <td>{dataCollection[dcKey].au}</td>
+                  <td>{dataCollection[dcKey].userId}</td>
                   <td>
-                    <div onClick={this.showEditDialogue}>
+                    <div onClick={this.showEditDialogue(dataCollection[dcKey])}>
                       <Button
                         floating
                         className="orange"
@@ -189,17 +190,10 @@ class RegentReport extends Component {
             </tbody>
           </Table>}
           {this.state.isEditDialogueOpen && <EditRegentReport
-            // name={this.state.name}
-            // month={this.state.month}
-            // year={this.state.year}
-            // day={this.state.day}
-            // chart={dataCollection[this.state.day].chart}
-            // upper={dataCollection[this.state.day].upper}
-            // lower={dataCollection[this.state.day].lower}
-            // digital={dataCollection[this.state.day].digital}
-            // batCheck={dataCollection[this.state.day].batCheck}
-            // au={dataCollection[this.state.day].au}
             hideEditDialogue={this.hideEditDialogue}
+            dataCollection={this.state.selectedDc}
+            selectedMonth={this.state.month}
+            selectedYear={this.state.year}
           />}
         </div>
       </>
@@ -211,7 +205,8 @@ const mapStateToProps = state => ({
   auth: state.auth,
   error: state.regentChart.error,
   dataCollection: state.regentChart.dataCollection,
-  loading: state.regentChart.loading
+  loading: state.regentChart.loading,
+  serialNo: state.regentChart.serialNo
 });
 
 const mapDispatchToProps = (dispatch) => ({
