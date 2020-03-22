@@ -15,6 +15,7 @@ class RegentReport extends Component {
     isEditDialogueOpen: false,
     isContentEditable: false,
     name: "Reg3",
+    serialNo: "S56",
     month: new Date().getMonth(),
     year: new Date().getFullYear(),
     selectedDc: []
@@ -22,7 +23,7 @@ class RegentReport extends Component {
   componentDidMount() {
     const regantChart = {
       name: this.state.name,
-      month: months[this.state.month],
+      month: this.state.month,
       year: this.state.year
     }
     this.props.getRegantChartDetails(regantChart);
@@ -40,7 +41,7 @@ class RegentReport extends Component {
     this.setState({ month: event.target.value });
     const regantChart = {
       name: this.state.name,
-      month: months[event.target.value],
+      month: event.target.value,
       year: this.state.year
     }
     this.props.getRegantChartDetails(regantChart);
@@ -49,7 +50,7 @@ class RegentReport extends Component {
     this.setState({ year: event.target.value });
     const regantChart = {
       name: this.state.name,
-      month: months[this.state.month],
+      month: this.state.month,
       year: event.target.value
     }
     this.props.getRegantChartDetails(regantChart);
@@ -58,9 +59,9 @@ class RegentReport extends Component {
   generateBlankReport = () => {
     const regantChart = {
       name: this.state.name,
-      month: months[this.state.month],
+      month: this.state.month,
       year: this.state.year,
-      serialNo: this.props.serialNo,
+      serialNo: this.state.serialNo,
       range: '2C-8C'
     }
     this.props.createRegentChart(regantChart);
