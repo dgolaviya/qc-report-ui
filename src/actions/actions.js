@@ -5,7 +5,8 @@ import {
   SET_USER_AUTHORIZED,
   REGISTER_USER,
   GET_REGENT_CHARTS,
-  UPDATE_REGENT_CHARTS
+  UPDATE_REGENT_CHARTS,
+  CREATE_REGENT_CHART
 } from "./types";
 
 // Register User
@@ -55,6 +56,17 @@ export const updateRegantChartDetails = (regantChart) => {
   const url = '/updateRegantChart';
   const payload = {
     action: UPDATE_REGENT_CHARTS,
+    method: 'POST',
+    url,
+    data: regantChart
+  };
+  return { type: "API_INVOCATION", payload };
+};
+
+export const createRegentChart = (regantChart) => {
+  const url = '/createRegantChart';
+  const payload = {
+    action: CREATE_REGENT_CHART,
     method: 'POST',
     url,
     data: regantChart

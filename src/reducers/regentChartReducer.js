@@ -1,7 +1,8 @@
 import {
   GET_REGENT_CHARTS_SUCCESS,
   GET_REGENT_CHARTS_FAILED,
-  GET_REGENT_CHARTS_PENDING
+  GET_REGENT_CHARTS_PENDING,
+  CREATE_REGENT_CHART_SUCCESS,
 } from '../actions/types';
 
 const initialState = {
@@ -28,6 +29,12 @@ const regentChartReducer = (state = initialState, action) => {
       return {
         ...initialState,
         error: action.payload.response.response.data.message
+      };
+    }
+    case CREATE_REGENT_CHART_SUCCESS: {
+      return {
+        ...initialState,
+        ...action.payload.data
       };
     }
     default:

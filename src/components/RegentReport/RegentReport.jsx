@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Select, TextInput, Icon, Button, Table, Preloader } from 'react-materialize';
 import EditRegentReport from './EditRegentReport';
 import { connect } from "react-redux";
-import { getRegantChartDetails } from "../../actions/actions";
+import { getRegantChartDetails, createRegentChart } from "../../actions/actions";
 
 const months = ['January', 'February', 'March', 'April', 'May', 'June',
   'July', 'August', 'September', 'October', 'November', 'December'
@@ -53,6 +53,18 @@ class RegentReport extends Component {
     }
     this.props.getRegantChartDetails(regantChart);
   };
+
+  generateBlankReport = () => {
+    const regantChart = {
+      name: this.state.name,
+      month: months[this.state.month],
+      year: this.state.year,
+      serialNo: 'S0002',
+      range: '2C-8C'
+    }
+    this.props.createRegentChart(regantChart);
+  }
+
   render() {
     const dcKeys = Object.keys(this.props.dataCollection) || [];
     const { dataCollection, error, loading } = this.props;
@@ -111,7 +123,19 @@ class RegentReport extends Component {
           </div>
         </div>
         <div className="content flex d-col">
-          {error && <div className="flex d-row j-c-center">{error}</div>}
+          {error && <div className="flex d-col a-i-center">
+            <div className="py-10">
+              {error}
+            </div>
+            <div>
+              <Button
+                onClick={this.generateBlankReport}
+                className="blue"
+                node="button"
+                waves="light"
+              >Generate Blank Report</Button>
+            </div>
+          </div>}
           {loading && (
             <div className="flex d-row j-c-center a-i-center preloader">
               <Preloader
@@ -191,7 +215,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  getRegantChartDetails: (regentChartData) => dispatch(getRegantChartDetails(regentChartData))
+  getRegantChartDetails: (regentChartData) => dispatch(getRegantChartDetails(regentChartData)),
+  createRegentChart: (regentChartData) => dispatch(createRegentChart(regentChartData))
 });
 
 
