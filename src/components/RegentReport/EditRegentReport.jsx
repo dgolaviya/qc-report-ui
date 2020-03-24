@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Range, Icon, Checkbox, RadioGroup, Button } from 'react-materialize';
-import { updateRegantChartDetails } from "../../actions/actions";
+import { updateRegantChartDetails, resetSuccessMessage } from "../../actions/actions";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import SuccessMessage from '../SuccessMessage';
@@ -29,18 +29,22 @@ export class EditRegentReport extends Component {
     };
     this.props.updateRegantChartDetails(regantChart);
   }
+  closeNotification = () => {
+    this.props.resetSuccessMessage()
+  }
   onAUChange = (event) => {
     this.setState({ au: event.target.value });
   }
   render() {
     const { userId, chart, lower, upper, digital, batCheck } = this.props.dataCollection;
+    const { showSuccessMessage } = this.props;
     return (
       <div className="flex d-col edit-regent-report">
         <div onClick={this.props.hideEditDialogue} className="flex d-row w-100 j-c-end">
           <Icon>close</Icon>
         </div>
         <div className="title">Regent Report edited by {userId}</div>
-        <SuccessMessage messageText="Data saved successfully " />
+        {showSuccessMessage && <SuccessMessage closeNotification={this.closeNotification} messageText="Data saved successfully " />}
         <form onSubmit={this.submitRegentData}>
           <label>
             <span>Chart</span>
@@ -124,11 +128,13 @@ export class EditRegentReport extends Component {
 
 const mapStateToProps = state => ({
   auth: state.auth,
-  serialNo: state.regentChart.serialNo
+  serialNo: state.regentChart.serialNo,
+  showSuccessMessage: state.regentChart.showSuccessMessage
 });
 
 const mapDispatchToProps = dispatch => ({
-  updateRegantChartDetails: (regantChart) => dispatch(updateRegantChartDetails(regantChart))
+  updateRegantChartDetails: (regantChart) => dispatch(updateRegantChartDetails(regantChart)),
+  resetSuccessMessage: () => dispatch(resetSuccessMessage())
 });
 
 

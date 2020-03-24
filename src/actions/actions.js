@@ -6,7 +6,8 @@ import {
   REGISTER_USER,
   GET_REGENT_CHARTS,
   UPDATE_REGENT_CHARTS,
-  CREATE_REGENT_CHART
+  CREATE_REGENT_CHART,
+  RESET_SUCCESS_MESSAGE
 } from "./types";
 
 // Register User
@@ -73,3 +74,5 @@ export const createRegentChart = (regantChart) => {
   };
   return { type: "API_INVOCATION", payload };
 };
+
+export const resetSuccessMessage = () => ({ type: RESET_SUCCESS_MESSAGE });

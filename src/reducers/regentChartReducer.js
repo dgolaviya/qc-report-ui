@@ -3,12 +3,15 @@ import {
   GET_REGENT_CHARTS_FAILED,
   GET_REGENT_CHARTS_PENDING,
   CREATE_REGENT_CHART_SUCCESS,
+  UPDATE_REGENT_CHARTS_SUCCESS,
+  RESET_SUCCESS_MESSAGE
 } from '../actions/types';
 
 const initialState = {
   dataCollection: [],
   loading: false,
-  error: ''
+  error: '',
+  showSuccessMessage: false
 };
 
 const regentChartReducer = (state = initialState, action) => {
@@ -35,6 +38,18 @@ const regentChartReducer = (state = initialState, action) => {
       return {
         ...initialState,
         ...action.payload.data
+      };
+    }
+    case UPDATE_REGENT_CHARTS_SUCCESS: {
+      return {
+        ...state,
+        showSuccessMessage: true
+      };
+    }
+    case RESET_SUCCESS_MESSAGE: {
+      return {
+        ...state,
+        showSuccessMessage: false
       };
     }
     default:

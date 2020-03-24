@@ -28,6 +28,17 @@ class RegentReport extends Component {
     }
     this.props.getRegantChartDetails(regantChart);
   }
+  componentDidUpdate(prevProps, prevState) {
+    const regantChart = {
+      name: this.state.name,
+      month: this.state.month,
+      year: this.state.year
+    }
+    if(prevProps.showSuccessMessage != this.props.showSuccessMessage) {
+      this.props.getRegantChartDetails(regantChart);
+    }
+  }
+  
   toggleIsContentEditable = () => {
     this.setState(prevState => ({ isContentEditable: !prevState.isContentEditable }));
   }
@@ -207,7 +218,8 @@ const mapStateToProps = state => ({
   error: state.regentChart.error,
   dataCollection: state.regentChart.dataCollection,
   loading: state.regentChart.loading,
-  serialNo: state.regentChart.serialNo
+  serialNo: state.regentChart.serialNo,
+  showSuccessMessage: state.regentChart.showSuccessMessage
 });
 
 const mapDispatchToProps = (dispatch) => ({
