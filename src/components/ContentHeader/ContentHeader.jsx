@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Select } from 'react-materialize';
 
-const ContentHeader = () => {
+class ContentHeader extends Component {
+render ()  {
   return (
     <div className="content-header flex d-row j-c-end">
       <Select
@@ -17,6 +18,7 @@ const ContentHeader = () => {
       </Select>
     </div>
   )
-};
+}
+}
 
 export default ContentHeader;

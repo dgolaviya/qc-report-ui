@@ -4,10 +4,13 @@ import { updateRegantChartDetails, resetSuccessMessage } from "../../actions/act
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import SuccessMessage from '../SuccessMessage';
+const months = ['January', 'February', 'March', 'April', 'May', 'June',
+  'July', 'August', 'September', 'October', 'November', 'December'
+];
 
 export class EditRegentReport extends Component {
   state = {
-    au: this.props.dataCollection.au
+    au: this.props.dataCollection.au || 'A'
   }
 
   submitRegentData = (event) => {
@@ -44,7 +47,8 @@ export class EditRegentReport extends Component {
         <div onClick={this.props.hideEditDialogue} className="flex d-row w-100 j-c-end">
           <Icon>close</Icon>
         </div>
-        <div className="title">Regent Report edited by {userId}</div>
+        <div className="title">Regent Report edited by {this.props.user.name}</div>
+        <div className="title">Date : {this.props.dataCollection.day}-{months[this.props.selectedMonth]}</div>
         {showSuccessMessage && <SuccessMessage closeNotification={this.closeNotification} messageText="Data saved successfully " />}
         {!showSuccessMessage && (
           <form onSubmit={this.submitRegentData}>
