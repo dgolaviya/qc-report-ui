@@ -18,25 +18,28 @@ const regentChartReducer = (state = initialState, action) => {
   switch (action.type) {
     case GET_REGENT_CHARTS_PENDING: {
       return {
-        ...initialState,
+        ...state,
         loading: true
       }
     }
     case GET_REGENT_CHARTS_SUCCESS: {
       return {
-        ...initialState,
-        ...action.payload.data
+        ...state,
+        ...action.payload.data,
+        loading: false,
+        error: ''
       };
     }
     case GET_REGENT_CHARTS_FAILED: {
       return {
-        ...initialState,
+        ...state,
+        loading: false,
         error: action.payload.response.response.data.message
       };
     }
     case CREATE_REGENT_CHART_SUCCESS: {
       return {
-        ...initialState,
+        ...state,
         ...action.payload.data
       };
     }

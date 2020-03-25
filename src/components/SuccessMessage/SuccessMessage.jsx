@@ -3,15 +3,12 @@ import { Icon } from 'react-materialize';
 
 class SuccessMessage extends Component {
   componentDidMount() {
-    setTimeout(1000, () => {
-      // console.log('method called');
+    setTimeout(() => {
       this.props.closeNotification();
-    });
-    // this.props.closeNotification();
+    }, 1000);
   }
 
   render() {
-    console.log(this.props);
     return (
       <div className="flex d-row green white-text py-10">
         <div className="flex d-row">

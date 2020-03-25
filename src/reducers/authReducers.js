@@ -33,7 +33,8 @@ const authReducer = (state = initialState, action) => {
     case SET_USER_AUTHORIZED:
       return {
         ...state,
-        isAuthenticated: action.payload.isAuthenticated
+        isAuthenticated: action.payload.isAuthenticated,
+        user: action.payload.decoded
       };
     default:
       return state;

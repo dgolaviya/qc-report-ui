@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { Select, TextInput, Icon, Button, Table, Preloader } from 'react-materialize';
+import { Select, TextInput, Icon, Button, Preloader } from 'react-materialize';
 import EditRegentReport from './EditRegentReport';
 import { connect } from "react-redux";
 import { getRegantChartDetails, createRegentChart } from "../../actions/actions";
+import RegentTable from './RegentTable';
 
 const months = ['January', 'February', 'March', 'April', 'May', 'June',
   'July', 'August', 'September', 'October', 'November', 'December'
@@ -13,7 +14,7 @@ const years = [2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020,
 class RegentReport extends Component {
   constructor(props) {
     super(props)
-    const queryParams = new URLSearchParams(this.props.location.search);  
+    const queryParams = new URLSearchParams(this.props.location.search);
     this.state = {
       isEditDialogueOpen: false,
       isContentEditable: false,
@@ -21,7 +22,7 @@ class RegentReport extends Component {
       serialNo: "S56",
       month: queryParams.get("month") || new Date().getMonth(),
       year: queryParams.get("year") || new Date().getFullYear(),
-      selectedDc: []   
+      selectedDc: []
     }
   }
   componentDidMount() {
@@ -32,17 +33,6 @@ class RegentReport extends Component {
     }
     this.props.getRegantChartDetails(regantChart);
   }
-  componentDidUpdate(prevProps, prevState) {
-    const regantChart = {
-      name: this.state.name,
-      month: this.state.month,
-      year: this.state.year
-    }
-    if (prevProps.showSuccessMessage !== this.props.showSuccessMessage) {
-      this.props.getRegantChartDetails(regantChart);
-    }
-  }
-
   toggleIsContentEditable = () => {
     this.setState(prevState => ({ isContentEditable: !prevState.isContentEditable }));
   }
@@ -83,8 +73,7 @@ class RegentReport extends Component {
   }
 
   render() {
-    const dcKeys = Object.keys(this.props.dataCollection) || [];
-    const { dataCollection, error, loading, serialNo } = this.props;
+    const { error, loading, serialNo } = this.props;
     const isHeaderFormEditable = !this.state.isContentEditable;
     return (
       <>
@@ -163,48 +152,14 @@ class RegentReport extends Component {
               />
             </div>
           )}
-          {(!error && !loading) && <Table className="centered highlight responsive-table">
-            <thead>
-              <tr>
-                <th data-field="day">Day</th>
-                <th data-field="chart">Chart</th>
-                <th data-field="upper">Upper</th>
-                <th data-field="lower">Lower</th>
-                <th data-field="digital">Digital</th>
-                <th data-field="range">Range</th>
-                <th data-field="bal-chk">Battery Chk</th>
-                <th data-field="au">A/U</th>
-                <th data-field="tech">Tech</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              {dcKeys.map(dcKey => (
-                <tr key={dcKey}>
-                  <td>{dataCollection[dcKey].day}-{months[this.state.month]}</td>
-                  <td>{dataCollection[dcKey].chart && <span>{dataCollection[dcKey].chart}&#8451;</span>}</td>
-                  <td>{dataCollection[dcKey].upper && <span>{dataCollection[dcKey].upper}&#8451;</span>}</td>
-                  <td>{dataCollection[dcKey].lower && <span>{dataCollection[dcKey].lower}&#8451;</span>}</td>
-                  <td>{dataCollection[dcKey].digital && <span>{dataCollection[dcKey].digital}&#8451;</span>}</td>
-                  <td>(2&#8451;-8&#8451;)</td>
-                  <td><Icon className="green-text">check_circle</Icon></td>
-                  <td>{dataCollection[dcKey].au}</td>
-                  <td>{dataCollection[dcKey].userId}</td>
-                  <td>
-                    <div onClick={this.showEditDialogue(dataCollection[dcKey])}>
-                      <Button
-                        floating
-                        className="orange"
-                        icon={<Icon>edit</Icon>}
-                        node="button"
-                        waves="light"
-                      />
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </Table>}
+          {
+            (!error && !loading) && <RegentTable
+              month={this.state.month}
+              showEditDialogue={this.showEditDialogue}
+              name={this.state.name}
+              year={this.state.year}
+            />
+          }
           {this.state.isEditDialogueOpen && <EditRegentReport
             hideEditDialogue={this.hideEditDialogue}
             dataCollection={this.state.selectedDc}
@@ -220,10 +175,8 @@ class RegentReport extends Component {
 const mapStateToProps = state => ({
   auth: state.auth,
   error: state.regentChart.error,
-  dataCollection: state.regentChart.dataCollection,
   loading: state.regentChart.loading,
-  serialNo: state.regentChart.serialNo,
-  showSuccessMessage: state.regentChart.showSuccessMessage
+  serialNo: state.regentChart.serialNo
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -231,6 +184,4 @@ const mapDispatchToProps = (dispatch) => ({
   createRegentChart: (regentChartData) => dispatch(createRegentChart(regentChartData))
 });
 
-
-//export default RegentReport;
 export default connect(mapStateToProps, mapDispatchToProps)(RegentReport);

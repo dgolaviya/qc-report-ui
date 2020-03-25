@@ -25,12 +25,13 @@ export class EditRegentReport extends Component {
       digital: event.target['digital'].value,
       au: this.state.au,
       batCheck: event.target['batChk'].checked,
-      userId: this.props.dataCollection.userId
+      userId: this.props.user.name
     };
     this.props.updateRegantChartDetails(regantChart);
   }
   closeNotification = () => {
     this.props.resetSuccessMessage()
+    this.props.hideEditDialogue();
   }
   onAUChange = (event) => {
     this.setState({ au: event.target.value });
@@ -45,89 +46,91 @@ export class EditRegentReport extends Component {
         </div>
         <div className="title">Regent Report edited by {userId}</div>
         {showSuccessMessage && <SuccessMessage closeNotification={this.closeNotification} messageText="Data saved successfully " />}
-        <form onSubmit={this.submitRegentData}>
-          <label>
-            <span>Chart</span>
-            <Range
-              min="2"
-              max="8"
-              step="0.1"
-              name="chart"
-              defaultValue={chart}
+        {!showSuccessMessage && (
+          <form onSubmit={this.submitRegentData}>
+            <label>
+              <span>Chart</span>
+              <Range
+                min="2"
+                max="8"
+                step="0.1"
+                name="chart"
+                defaultValue={chart}
+              />
+            </label>
+            <label>
+              <span>Upper</span>
+              <Range
+                min="2"
+                max="8"
+                step="0.1"
+                defaultValue={upper}
+                name="upper"
+              />
+            </label>
+            <label>
+              <span>Lower</span>
+              <Range
+                min="2"
+                max="8"
+                step="0.1"
+                defaultValue={lower}
+                name="lower"
+              />
+            </label>
+            <label>
+              <span>Digital</span>
+              <Range
+                min="2"
+                max="8"
+                step="0.1"
+                defaultValue={digital}
+                name="digital"
+              />
+            </label>
+            <Checkbox
+              checked
+              filledIn
+              id="checkbox_1"
+              label="Battery Chk"
+              value={batCheck}
+              name="batChk"
             />
-          </label>
-          <label>
-            <span>Upper</span>
-            <Range
-              min="2"
-              max="8"
-              step="0.1"
-              defaultValue={upper}
-              name="upper"
-            />
-          </label>
-          <label>
-            <span>Lower</span>
-            <Range
-              min="2"
-              max="8"
-              step="0.1"
-              defaultValue={lower}
-              name="lower"
-            />
-          </label>
-          <label>
-            <span>Digital</span>
-            <Range
-              min="2"
-              max="8"
-              step="0.1"
-              defaultValue={digital}
-              name="digital"
-            />
-          </label>
-          <Checkbox
-            checked
-            filledIn
-            id="checkbox_1"
-            label="Battery Chk"
-            value={batCheck}
-            name="batChk"
-          />
-          <div className="py-20">
-            <RadioGroup
-              name="AU"
-              onChange={this.onAUChange}
-              options={[
-                {
-                  label: 'A',
-                  value: 'A'
-                },
-                {
-                  label: 'U',
-                  value: 'U'
-                }
-              ]}
-              value={this.state.au}
-              withGap
-            />
-          </div>
-          <div className="center">
-            <Button
-              className="blue"
-              type="submit"
-              node="button"
-              waves="light"
-            >Save</Button>
-          </div>
-        </form>
+            <div className="py-20">
+              <RadioGroup
+                name="AU"
+                onChange={this.onAUChange}
+                options={[
+                  {
+                    label: 'A',
+                    value: 'A'
+                  },
+                  {
+                    label: 'U',
+                    value: 'U'
+                  }
+                ]}
+                value={this.state.au}
+                withGap
+              />
+            </div>
+            <div className="center">
+              <Button
+                className="blue"
+                type="submit"
+                node="button"
+                waves="light"
+              >Save</Button>
+            </div>
+          </form>
+        )}
       </div>
     )
   }
 }
 
 const mapStateToProps = state => ({
-  auth: state.auth,
+  user: state.auth.user,
   serialNo: state.regentChart.serialNo,
   showSuccessMessage: state.regentChart.showSuccessMessage
 });
