@@ -11,14 +11,18 @@ const years = [2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020,
   2021, 2022, 2023, 2024];
 
 class RegentReport extends Component {
-  state = {
-    isEditDialogueOpen: false,
-    isContentEditable: false,
-    name: "Reg3",
-    serialNo: "S56",
-    month: new Date().getMonth(),
-    year: new Date().getFullYear(),
-    selectedDc: []
+  constructor(props) {
+    super(props)
+    const queryParams = new URLSearchParams(this.props.location.search);  
+    this.state = {
+      isEditDialogueOpen: false,
+      isContentEditable: false,
+      name: "Reg3",
+      serialNo: "S56",
+      month: queryParams.get("month") || new Date().getMonth(),
+      year: queryParams.get("year") || new Date().getFullYear(),
+      selectedDc: []   
+    }
   }
   componentDidMount() {
     const regantChart = {
@@ -34,11 +38,11 @@ class RegentReport extends Component {
       month: this.state.month,
       year: this.state.year
     }
-    if(prevProps.showSuccessMessage != this.props.showSuccessMessage) {
+    if (prevProps.showSuccessMessage !== this.props.showSuccessMessage) {
       this.props.getRegantChartDetails(regantChart);
     }
   }
-  
+
   toggleIsContentEditable = () => {
     this.setState(prevState => ({ isContentEditable: !prevState.isContentEditable }));
   }
