@@ -96,7 +96,7 @@ class RegentReport extends Component {
             value="2&#8451;-8&#8451;"
           />
           <Select
-            disabled={isHeaderFormEditable}
+            //disabled={isHeaderFormEditable}
             label="Report Month"
             onChange={this.handleChangeMonth}
             value={this.state.month}
@@ -104,7 +104,7 @@ class RegentReport extends Component {
             {months.map((month, index) => <option key={month} value={index}>{month}</option>)}
           </Select>
           <Select
-            disabled={isHeaderFormEditable}
+            //disabled={isHeaderFormEditable}
             label="Report Year"
             onChange={this.handleChangeYear}
             value={this.state.year}
