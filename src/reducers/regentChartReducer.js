@@ -40,7 +40,8 @@ const regentChartReducer = (state = initialState, action) => {
     case CREATE_REGENT_CHART_SUCCESS: {
       return {
         ...state,
-        ...action.payload.data
+        ...action.payload.data,
+        error: false
       };
     }
     case UPDATE_REGENT_CHARTS_SUCCESS: {
